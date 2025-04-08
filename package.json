@@ -1,0 +1,46 @@
+{
+  "name": "opgg-mcp",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsup",
+    "test": "npx @modelcontextprotocol/inspector@latest node dist/index.js"
+  },
+  "bin": {
+    "opgg-mcp": "dist/index.js"
+  },
+  "keywords": [
+    "MCP",
+    "SSE",
+    "proxy"
+  ],
+  "type": "module",
+  "license": "MIT",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.10.0",
+    "eventsource": "^3.0.6"
+  },
+  "repository": {
+    "url": "https://github.com/opgginc/opgg-mcp"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.1",
+    "@types/node": "^22.14.1",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3"
+  },
+  "tsup": {
+    "entry": [
+      "src/index.ts"
+    ],
+    "format": [
+      "esm"
+    ],
+    "dts": true,
+    "splitting": true,
+    "sourcemap": true,
+    "clean": true
+  }
+}
