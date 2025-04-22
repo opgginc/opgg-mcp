@@ -4,13 +4,12 @@
 
 The OP.GG MCP Server is a Model Context Protocol implementation that seamlessly connects OP.GG data with AI agents and platforms. This server enables AI agents to retrieve various OP.GG data via function calling.
 
-![OP.GG MCP LoL Leaderboard Demo](./opgg-mcp-shorts-1.gif)
-
-![OP.GG MCP Esports Demo](./opgg-mcp-shorts-2.gif)
+![opgg-mcp-lol-leaderboard](https://github.com/user-attachments/assets/e89a77e7-0b83-4e20-a660-b16aa2d03fe2)
+![opgg-mcp-esports](https://github.com/user-attachments/assets/4e134577-57b6-4369-bb71-b72f1bebcdd8)
 
 ## Overview
 
-This MCP server provides AI agents with access to OP.GG data through a standardized interface. Built on TypeScript and Node.js, it connects directly to the OP.GG API and formats the data in a way that's easily consumable by AI models and agent frameworks.
+This MCP server provides AI agents with access to OP.GG data through a standardized interface. It offers a simple way to connect to our remote server (https://mcp-api.op.gg/mcp/sse), allowing for easy installation and immediate access to OP.GG data in a format that's easily consumable by AI models and agent frameworks.
 
 ## Features
 
@@ -39,30 +38,59 @@ The OP.GG MCP Server currently supports the following tools:
 - **valorant-characters-statistics**: Retrieve character statistics data for Valorant, optionally filtered by map
 - **valorant-player-matches**: Retrieve match history for a Valorant player using their game name and tag line
 
-## Installation
+## Usage
+
+The OP.GG MCP Server can be used with any MCP-compatible client. The following content explains installation methods using Claude Desktop as an example.
 
 ### Installing via Smithery
 
 To install OP.GG MCP for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@opgginc/opgg-mcp):
 
 ```bash
-npx -y @smithery/cli install @opgginc/opgg-mcp --client claude
+$ npx -y @smithery/cli@latest install @opgginc/opgg-mcp --client claude --key {SMITHERY_API_KEY}
 ```
 
 ### Adding to MCP Configuration
 
-**Note:** If you've cloned the repository or made any changes to the code, you may need to build the project first by running `npm run build` before adding it to your MCP configuration.
-
-#### For Claude Desktop
-
 To add this server to your Claude Desktop MCP configuration, add the following entry to your `claude_desktop_config.json` file:
+
+#### Mac/Linux
 
 ```json
 {
   "mcpServers": {
     "opgg-mcp": {
-      "command": "node",
-      "args": ["/path/to/opgg-mcp/dist/index.js"]
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@opgginc/opgg-mcp",
+        "--key",
+        "{SMITHERY_API_KEY}"
+      ]
+    }
+  }
+}
+```
+
+#### Windows
+
+```json
+{
+  "mcpServers": {
+    "opgg-mcp": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@opgginc/opgg-mcp",
+        "--key",
+        "{SMITHERY_API_KEY}"
+      ]
     }
   }
 }
@@ -70,14 +98,55 @@ To add this server to your Claude Desktop MCP configuration, add the following e
 
 After adding the configuration, restart Claude Desktop for the changes to take effect.
 
-## Usage
+### Direct Connection via SSE
 
-The OP.GG MCP Server can be used with any MCP-compatible client. Here are some examples:
+If you want to connect directly to our SSE endpoint, you can use the `mcp-remote` package. This provides a simple way to connect to our remote server without having to install the full OP.GG MCP Server.
+
+Add the following to your `claude_desktop_config.json` file:
+
+#### Mac/Linux
+
+```json
+{
+  "mcpServers": {
+    "opgg-mcp": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://mcp-api.op.gg/mcp/sse"
+      ]
+    }
+  }
+}
+```
+
+#### Windows
+
+```json
+{
+  "mcpServers": {
+    "opgg-mcp": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "mcp-remote",
+        "https://mcp-api.op.gg/mcp/sse"
+      ]
+    }
+  }
+}
+```
+
+This configuration will use the `mcp-remote` package to establish a direct connection to our SSE endpoint, providing you with immediate access to all OP.GG data tools.
 
 ### Listing Available Tools
 
 ```json
-{ "type": "list_tools" }
+{
+  "method": "tools/list",
+  "params": {}
+}
 ```
 
 Response:
@@ -148,105 +217,11 @@ Response:
 }
 ```
 
-### Example Tool Usage
-
-#### League of Legends Example
-
-```json
-{
-  "type": "tool_call",
-  "tool_call": {
-    "name": "lol-champion-analysis"
-  }
-}
-```
-
-Response:
-```json
-{
-  "content": [
-    {
-      "type": "text",
-      "text": "Champion Analysis for Ahri:\n\nTier: A\nWin Rate: 51.2%\nPick Rate: 8.5%\nBan Rate: 4.3%\nBest Runes: Electrocute, Sudden Impact, Eyeball Collection, Relentless Hunter\nBest Items: Luden's Echo, Sorcerer's Shoes, Zhonya's Hourglass\n---\n..."
-    }
-  ]
-}
-```
-
-#### Esports Example
-
-```json
-{
-  "type": "tool_call",
-  "tool_call": {
-    "name": "esports-lol-schedules"
-  }
-}
-```
-
-Response:
-```json
-{
-  "content": [
-    {
-      "type": "text",
-      "text": "Upcoming match schedules:\n\nMatch: Team A vs Team B\nLeague: LCK\nStatus: SCHEDULED\nScore: 0 - 0\nScheduled at: 4/6/2025, 7:00:00 PM\nDetails: https://esports.op.gg/matches/12345\n---\n..."
-    }
-  ]
-}
-```
-
-#### TFT Example
-
-```json
-{
-  "type": "tool_call",
-  "tool_call": {
-    "name": "tft-meta-trend-deck-list"
-  }
-}
-```
-
-Response:
-```json
-{
-  "content": [
-    {
-      "type": "text",
-      "text": "Current TFT Meta Decks:\n\nDeck: Yordle Gunners\nTier: S\nPopularity: 15.2%\nAverage Placement: 3.1\nKey Units: Tristana, Poppy, Rumble\nKey Items: Guinsoo's Rageblade, Infinity Edge, Bloodthirster\n---\n..."
-    }
-  ]
-}
-```
-
-#### Valorant Example
-
-```json
-{
-  "type": "tool_call",
-  "tool_call": {
-    "name": "valorant-meta-maps"
-  }
-}
-```
-
-Response:
-```json
-{
-  "content": [
-    {
-      "type": "text",
-      "text": "Valorant Map Meta Data:\n\nMap: Ascent\nAttack Win Rate: 48.2%\nDefense Win Rate: 51.8%\nPopular Agent Composition: Jett, Omen, Sova, Killjoy, Sage\n---\n..."
-    }
-  ]
-}
-```
-
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Related Links
 
-- [Model Context Protocol](https://modelcontextprotocol.com)
+- [Model Context Protocol](https://modelcontextprotocol.io)
 - [OP.GG](https://op.gg)
