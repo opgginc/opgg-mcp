@@ -16,31 +16,83 @@ This MCP server provides AI agents with access to OP.GG data through a standardi
 The OP.GG MCP Server currently supports the following tools:
 
 ### League of Legends
-- **lol-champion-analysis**: Fetch analysis data for a specific champion
-- **lol-champion-leader-board**: Fetch that champion's rank
+- **lol-champion-leader-board**: Get ranking board data for League of Legends champions.
+- **lol-champion-analysis**: Provides analysis data for League of Legends champions (counter and ban/pick data available in the "weakCounters" field).
+- **lol-champion-meta-data**: Retrieves meta data for a specific champion, including statistics and performance metrics.
+- **lol-champion-skin-sale**: Retrieves information about champion skins that are currently on sale.
+- **lol-summoner-search**: Search for League of Legends summoner information and stats.
+- **lol-champion-positions-data**: Retrieves position statistics data for League of Legends champions, including win rates and pick rates by position.
+- **lol-summoner-game-history**: Retrieve recent game history for a League of Legends summoner.
+- **lol-summoner-renewal**: Refresh and update League of Legends summoner match history and stats.
 
 ### Esports (League of Legends)
-- **esports-lol-schedules**: Get upcoming LoL match schedules
-- **esports-lol-team-standings**: Get team standings for a LoL league
+- **esports-lol-schedules**: Get upcoming LoL match schedules.
+- **esports-lol-team-standings**: Get team standings for a LoL league.
 
 ### Teamfight Tactics (TFT)
-- **tft-meta-trend-deck-list**: TFT deck list tool for retrieving current meta decks
-- **tft-meta-item-combinations**: TFT tool for retrieving information about item combinations and recipes
-- **tft-champion-item-build**: TFT tool for retrieving champion item build information
-- **tft-recommend-champion-for-item**: TFT tool for retrieving champion recommendations for a specific item
-- **tft-play-style-comment**: This tool provides comments on the playstyle of TFT champions
+- **tft-meta-trend-deck-list**: TFT deck list tool for retrieving current meta decks.
+- **tft-meta-item-combinations**: TFT tool for retrieving information about item combinations and recipes.
+- **tft-champion-item-build**: TFT tool for retrieving champion item build information.
+- **tft-recommend-champion-for-item**: TFT tool for retrieving champion recommendations for a specific item.
+- **tft-play-style-comment**: This tool provides comments on the playstyle of TFT champions.
 
 ### Valorant
-- **valorant-meta-maps**: Valorant map meta data
-- **valorant-meta-characters**: Valorant character meta data
-- **valorant-leaderboard**: Fetch Valorant leaderboard by region
-- **valorant-agents-composition-with-map**: Retrieve agent composition data for a Valorant map
-- **valorant-characters-statistics**: Retrieve character statistics data for Valorant, optionally filtered by map
-- **valorant-player-matches**: Retrieve match history for a Valorant player using their game name and tag line
+- **valorant-meta-maps**: Valorant map meta data.
+- **valorant-meta-characters**: Valorant character meta data.
+- **valorant-leaderboard**: Fetch Valorant leaderboard by region.
+- **valorant-agents-composition-with-map**: Retrieve agent composition data for a Valorant map.
+- **valorant-characters-statistics**: Retrieve character statistics data for Valorant, optionally filtered by map.
+- **valorant-player-match-history**: Retrieve match history for a Valorant player using their game name and tag line.
 
 ## Usage
 
 The OP.GG MCP Server can be used with any MCP-compatible client. The following content explains installation methods using Claude Desktop as an example.
+
+### Direct Connection via SSE
+
+If you want to connect directly to our SSE endpoint, you can use the `supergateway` package. This provides a simple way to connect to our remote server without having to install the full OP.GG MCP Server.
+
+Add the following to your `claude_desktop_config.json` file:
+
+#### Mac/Linux
+
+```json
+{
+  "mcpServers": {
+    "opgg-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "supergateway",
+        "--sse",
+        "https://mcp-api.op.gg/mcp/sse"
+      ]
+    }
+  }
+}
+```
+
+#### Windows
+
+```json
+{
+  "mcpServers": {
+    "opgg-mcp": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "supergateway",
+        "--sse",
+        "https://mcp-api.op.gg/mcp/sse"
+      ]
+    }
+  }
+}
+```
+
+This configuration will use the `supergateway` package to establish a direct connection to our SSE endpoint, providing you with immediate access to all OP.GG data tools.
 
 ### Installing via Smithery
 
@@ -97,125 +149,6 @@ To add this server to your Claude Desktop MCP configuration, add the following e
 ```
 
 After adding the configuration, restart Claude Desktop for the changes to take effect.
-
-### Direct Connection via SSE
-
-If you want to connect directly to our SSE endpoint, you can use the `mcp-remote` package. This provides a simple way to connect to our remote server without having to install the full OP.GG MCP Server.
-
-Add the following to your `claude_desktop_config.json` file:
-
-#### Mac/Linux
-
-```json
-{
-  "mcpServers": {
-    "opgg-mcp": {
-      "command": "npx",
-      "args": [
-        "mcp-remote",
-        "https://mcp-api.op.gg/mcp/sse"
-      ]
-    }
-  }
-}
-```
-
-#### Windows
-
-```json
-{
-  "mcpServers": {
-    "opgg-mcp": {
-      "command": "cmd",
-      "args": [
-        "/c",
-        "npx",
-        "mcp-remote",
-        "https://mcp-api.op.gg/mcp/sse"
-      ]
-    }
-  }
-}
-```
-
-This configuration will use the `mcp-remote` package to establish a direct connection to our SSE endpoint, providing you with immediate access to all OP.GG data tools.
-
-### Listing Available Tools
-
-```json
-{
-  "method": "tools/list",
-  "params": {}
-}
-```
-
-Response:
-```json
-{
-  "tools": [
-    {
-      "name": "lol-champion-analysis",
-      "description": "Fetch analysis data for a specific champion"
-    },
-    {
-      "name": "lol-champion-leader-board",
-      "description": "Fetch that champion's rank"
-    },
-    {
-      "name": "esports-lol-schedules",
-      "description": "Get upcoming LoL match schedules"
-    },
-    {
-      "name": "esports-lol-team-standings",
-      "description": "Get team standings for a LoL league"
-    },
-    {
-      "name": "tft-meta-trend-deck-list",
-      "description": "TFT deck list tool for retrieving current meta decks"
-    },
-    {
-      "name": "tft-meta-item-combinations",
-      "description": "TFT tool for retrieving information about item combinations and recipes"
-    },
-    {
-      "name": "tft-champion-item-build",
-      "description": "TFT tool for retrieving champion item build information"
-    },
-    {
-      "name": "tft-recommend-champion-for-item",
-      "description": "TFT tool for retrieving champion recommendations for a specific item"
-    },
-    {
-      "name": "tft-play-style-comment",
-      "description": "This tool provides comments on the playstyle of TFT champions"
-    },
-    {
-      "name": "valorant-meta-maps",
-      "description": "Valorant map meta data"
-    },
-    {
-      "name": "valorant-meta-characters",
-      "description": "Valorant character meta data"
-    },
-    {
-      "name": "valorant-leaderboard",
-      "description": "Fetch Valorant leaderboard by region"
-    },
-    {
-      "name": "valorant-agents-composition-with-map",
-      "description": "Retrieve agent composition data for a Valorant map"
-    },
-    {
-      "name": "valorant-characters-statistics",
-      "description": "Retrieve character statistics data for Valorant, optionally filtered by map"
-    },
-    {
-      "name": "valorant-player-matches",
-      "description": "Retrieve match history for a Valorant player using their game name and tag line"
-    }
-  ]
-}
-```
 
 ## License
 
