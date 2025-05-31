@@ -9,7 +9,7 @@ The OP.GG MCP Server is a Model Context Protocol implementation that seamlessly 
 
 ## Overview
 
-This MCP server provides AI agents with access to OP.GG data through a standardized interface. It offers a simple way to connect to our remote server (https://mcp-api.op.gg/mcp/sse), allowing for easy installation and immediate access to OP.GG data in a format that's easily consumable by AI models and agent frameworks.
+This MCP server provides AI agents with access to OP.GG data through a standardized interface. It offers a simple way to connect to our remote server (https://mcp-api.op.gg/mcp), allowing for easy installation and immediate access to OP.GG data in a format that's easily consumable by AI models and agent frameworks.
 
 ## Features
 
@@ -48,9 +48,9 @@ The OP.GG MCP Server currently supports the following tools:
 
 The OP.GG MCP Server can be used with any MCP-compatible client. The following content explains installation methods using Claude Desktop as an example.
 
-### Direct Connection via SSE
+### Direct Connection via StreamableHttp
 
-If you want to connect directly to our SSE endpoint, you can use the `supergateway` package. This provides a simple way to connect to our remote server without having to install the full OP.GG MCP Server.
+If you want to connect directly to our StreamableHttp endpoint, you can use the `supergateway` package. This provides a simple way to connect to our remote server without having to install the full OP.GG MCP Server.
 
 Add the following to your `claude_desktop_config.json` file:
 
@@ -64,8 +64,8 @@ Add the following to your `claude_desktop_config.json` file:
       "args": [
         "-y",
         "supergateway",
-        "--sse",
-        "https://mcp-api.op.gg/mcp/sse"
+        "--streamableHttp",
+        "https://mcp-api.op.gg/mcp"
       ]
     }
   }
@@ -84,15 +84,15 @@ Add the following to your `claude_desktop_config.json` file:
         "npx",
         "-y",
         "supergateway",
-        "--sse",
-        "https://mcp-api.op.gg/mcp/sse"
+        "--streamableHttp",
+        "https://mcp-api.op.gg/mcp"
       ]
     }
   }
 }
 ```
 
-This configuration will use the `supergateway` package to establish a direct connection to our SSE endpoint, providing you with immediate access to all OP.GG data tools.
+This configuration will use the `supergateway` package to establish a direct connection to our StreamableHttp endpoint, providing you with immediate access to all OP.GG data tools.
 
 ### Installing via Smithery
 

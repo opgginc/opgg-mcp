@@ -6,7 +6,7 @@ import { EventSource } from "eventsource";
 import { setTimeout } from "node:timers";
 import util from "node:util";
 import { proxyServer } from "./proxy-server.js";
-import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 
 util.inspect.defaultOptions.depth = 8;
@@ -27,7 +27,7 @@ const proxy = async (url: string): Promise<void> => {
     },
   );
 
-  const transport = new SSEClientTransport(new URL(url));
+  const transport = new StreamableHTTPClientTransport(new URL(url));
   await client.connect(transport);
 
   const serverVersion = client.getServerVersion() as {
@@ -60,7 +60,7 @@ const main = async () => {
   });
 
   try {
-    await proxy("https://mcp-api.op.gg/mcp/sse");
+    await proxy("https://mcp-api.op.gg/mcp");
   } catch (error) {
     console.error("could not start the proxy", error);
 
