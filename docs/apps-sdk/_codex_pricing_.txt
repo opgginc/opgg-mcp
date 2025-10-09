@@ -1,0 +1,153 @@
+---
+url: "https://developers.openai.com/codex/pricing/"
+title: "Codex Pricing"
+---
+
+## Search the docs
+
+⌘K/CtrlK
+
+Close
+
+Clear
+
+Primary navigation
+
+Codex
+
+ResourcesCodexChatGPTBlog
+
+Clear
+
+- [Home](https://developers.openai.com/codex)
+- [Quickstart](https://developers.openai.com/codex/quickstart)
+- [Concepts](https://developers.openai.com/codex/concepts)
+- [Pricing](https://developers.openai.com/codex/pricing)
+- [Changelog](https://developers.openai.com/codex/changelog)
+
+### Codex CLI
+
+- [Overview](https://developers.openai.com/codex/cli)
+- [Configuration](https://developers.openai.com/codex/local-config#cli)
+
+### Codex IDE Extension
+
+- [Set up your IDE](https://developers.openai.com/codex/ide)
+- [Configuration](https://developers.openai.com/codex/local-config#ide)
+- [IDE → Cloud tasks](https://developers.openai.com/codex/ide/cloud-tasks)
+
+### Codex Cloud
+
+- [Delegate to Codex](https://developers.openai.com/codex/cloud)
+- [Environments](https://developers.openai.com/codex/cloud/environments)
+- [Code Review](https://developers.openai.com/codex/cloud/code-review)
+- [Internet Access](https://developers.openai.com/codex/cloud/internet-access)
+
+### Codex SDK
+
+- [Overview](https://developers.openai.com/codex/sdk)
+- [TypeScript](https://developers.openai.com/codex/sdk#typescript-library)
+- [GitHub Action](https://developers.openai.com/codex/sdk#github-action)
+
+### Guides
+
+- [Agents SDK](https://developers.openai.com/codex/guides/agents-sdk)
+- [Prompting Codex](https://developers.openai.com/codex/prompting)
+- [Model Context Protocol (MCP)](https://developers.openai.com/codex/mcp)
+- [Autofix CI](https://developers.openai.com/codex/autofix-ci)
+- [Enterprise Admin](https://developers.openai.com/codex/enterprise)
+- [Security Admin](https://developers.openai.com/codex/security)
+- [Codex on Windows](https://developers.openai.com/codex/windows)
+
+### Integrations
+
+- [Slack](https://developers.openai.com/codex/integrations/slack)
+
+### Resources
+
+- [AGENTS.md](https://agents.md/)
+- [Codex on GitHub](https://github.com/openai/codex)
+
+## Pricing plans
+
+Codex is included in your ChatGPT Plus, Pro, Business, Edu, or Enterprise plan.
+
+Each plan offers different usage limits for local and cloud tasks, which you can find more details about below.
+
+Refer to our ChatGPT [pricing page](https://chatgpt.com/pricing/) for details about each plan.
+
+## Usage limits
+
+Codex usage limits depend on your plan and where you execute tasks. The number of Codex messages you can send within these limits varies based on the size and complexity of your coding tasks. Small scripts or simple functions may only consume a fraction of your allowance, while larger codebases, multi-file projects, or extended sessions that require Codex to hold more context will use significantly more per message.
+
+Cloud tasks will not count toward usage limits until October 20, 2025.
+
+When you hit your usage limit, you won’t be able to use Codex until your usage window resets.
+
+If you need more usage, you may use an API key to run additional local tasks (usage billed at standard API rates)—refer to the [pay-as-you-go section below](https://developers.openai.com/codex/pricing/#use-an-openai-api-key).
+For Business, Edu, and Enterprise plans with flexible pricing, you may also consider purchasing extra user credits.
+
+### Plus
+
+- Usage limits apply across both local and cloud tasks. Average users can send about 30-150 local messages or 5-40 cloud tasks every 5 hours, with a shared weekly limit.
+- For a limited time, Code Review on your own pull requests does not count toward usage limits.
+- _Best for developers looking to power a few focused coding sessions each week._
+
+### Pro
+
+- Usage limits apply across both local and cloud tasks. Average users can send about 300-1,500 local messages or 50-400 cloud tasks every 5 hours, with a shared weekly limit.
+- For a limited time, Code Review on your own pull requests does not count toward usage limits.
+- _Best for developers looking to power their full workday across multiple projects._
+
+### Business
+
+Business plans include the same per-seat usage limits as Plus. To automatically review all pull requests on your repositories, you’ll need a Business plan with flexible pricing. Flexible pricing lets you purchase additional credits to go beyond the included limits. Please refer to the ChatGPT rate card for more information.
+
+### Enterprise and Edu
+
+For Enterprise and Edu plans using flexible pricing, usage draws down from your workspace’s shared credit pool. Please refer to the ChatGPT rate card for more information.
+
+Enterprise and Edu plans without flexible pricing include the same per-seat usage limits as Plus. To automatically review all pull requests on your repositories, you’ll need flexible pricing.
+
+## Use an OpenAI API key
+
+You can extend your local Codex usage (CLI and IDE extension) with an API key. API key usage is billed through your OpenAI platform account at the standard API rates, which you can review on the [API pricing page](https://openai.com/api/pricing/).
+
+First, make sure you set up your `OPENAI_API_KEY` environment variable globally.
+You can get your API key from the [OpenAI dashboard](https://platform.openai.com/api-keys).
+
+Then, you can use the CLI and IDE extension with your API key.
+
+If you’ve previously used the Codex CLI with an API key, update to the latest version, run `codex logout`, and then run `codex` to switch back to subscription-based access when you’re ready.
+
+### Use your API key with Codex CLI
+
+You can change which auth method to use with the CLI by changing the `preferred_auth_method` in the codex config file:
+
+```
+# ~/.codex/config.toml
+preferred_auth_method = "apikey"
+
+```
+
+You can also override it ad-hoc via CLI:
+
+```
+codex --config preferred_auth_method="apikey"
+
+```
+
+You can go back to ChatGPT auth (default) by running:
+
+```
+codex --config preferred_auth_method="chatgpt"
+
+```
+
+You can switch back and forth as needed, for example if you use your ChatGPT account but run out of usage credits.
+
+### Use your API key with the IDE extension
+
+When you open the IDE extension, you’ll be prompted to sign in with your ChatGPT account or to use your API key instead.
+If you wish to use your API key instead, you can select the option to use your API key.
+Make sure it is configured in your environment variables.

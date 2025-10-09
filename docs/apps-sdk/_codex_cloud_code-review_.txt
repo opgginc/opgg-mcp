@@ -1,0 +1,97 @@
+---
+url: "https://developers.openai.com/codex/cloud/code-review/"
+title: "Code Review"
+---
+
+## Search the docs
+
+⌘K/CtrlK
+
+Close
+
+Clear
+
+Primary navigation
+
+Codex
+
+ResourcesCodexChatGPTBlog
+
+Clear
+
+- [Home](https://developers.openai.com/codex)
+- [Quickstart](https://developers.openai.com/codex/quickstart)
+- [Concepts](https://developers.openai.com/codex/concepts)
+- [Pricing](https://developers.openai.com/codex/pricing)
+- [Changelog](https://developers.openai.com/codex/changelog)
+
+### Codex CLI
+
+- [Overview](https://developers.openai.com/codex/cli)
+- [Configuration](https://developers.openai.com/codex/local-config#cli)
+
+### Codex IDE Extension
+
+- [Set up your IDE](https://developers.openai.com/codex/ide)
+- [Configuration](https://developers.openai.com/codex/local-config#ide)
+- [IDE → Cloud tasks](https://developers.openai.com/codex/ide/cloud-tasks)
+
+### Codex Cloud
+
+- [Delegate to Codex](https://developers.openai.com/codex/cloud)
+- [Environments](https://developers.openai.com/codex/cloud/environments)
+- [Code Review](https://developers.openai.com/codex/cloud/code-review)
+- [Internet Access](https://developers.openai.com/codex/cloud/internet-access)
+
+### Codex SDK
+
+- [Overview](https://developers.openai.com/codex/sdk)
+- [TypeScript](https://developers.openai.com/codex/sdk#typescript-library)
+- [GitHub Action](https://developers.openai.com/codex/sdk#github-action)
+
+### Guides
+
+- [Agents SDK](https://developers.openai.com/codex/guides/agents-sdk)
+- [Prompting Codex](https://developers.openai.com/codex/prompting)
+- [Model Context Protocol (MCP)](https://developers.openai.com/codex/mcp)
+- [Autofix CI](https://developers.openai.com/codex/autofix-ci)
+- [Enterprise Admin](https://developers.openai.com/codex/enterprise)
+- [Security Admin](https://developers.openai.com/codex/security)
+- [Codex on Windows](https://developers.openai.com/codex/windows)
+
+### Integrations
+
+- [Slack](https://developers.openai.com/codex/integrations/slack)
+
+### Resources
+
+- [AGENTS.md](https://agents.md/)
+- [Codex on GitHub](https://github.com/openai/codex)
+
+Codex can review code directly in GitHub. This is great for finding bugs and improving code quality.
+
+## Setup
+
+Before you can use Codex directly inside GitHub, you will need to make sure [Codex cloud](https://developers.openai.com/codex/cloud) is set up.
+
+Afterwards, you can go into the [Codex settings](https://chatgpt.com/codex/settings/code-review) and enable “Code review” on your repository.
+
+![](https://developers.openai.com/images/codex/code-review/code-review-settings.png)
+
+## Usage
+
+After you have enabled Code review on your repository, you can start using it by tagging `@codex` in a comment on a pull request.
+
+To trigger a review by codex you’ll have to specifically write `@codex review`.
+
+![](https://developers.openai.com/images/codex/code-review/review-trigger.png)
+
+Afterwards you’ll see Codex react to your comment with 👀 acknowledging that it started your task.
+
+Once completed Codex will leave a regular code review in the PR the same way your team would do.
+
+![](https://developers.openai.com/images/codex/code-review/review-example.png)
+
+## Giving Codex other tasks
+
+If you mention `@codex` in a comment with anything other than `review` Codex will kick off a [cloud task](https://developers.openai.com/codex/cloud) instead with the context of your pull request.
