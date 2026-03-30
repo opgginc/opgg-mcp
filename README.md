@@ -111,3 +111,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - [Model Context Protocol](https://modelcontextprotocol.io)
 - [OP.GG](https://op.gg)
+
+## Hosted deployment
+
+A hosted deployment is available on [Fronteir AI](https://fronteir.ai/mcp/opgginc-opgg-mcp).
+
