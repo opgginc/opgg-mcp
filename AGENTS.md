@@ -4,6 +4,25 @@ This repo is a thin stdio→HTTP proxy for the remote OP.GG MCP server. Tool
 definitions live on the remote endpoint, not in this repo. See `README.md`
 for the user-facing tool list.
 
+## Context
+- **Org**: OP.GG (`opgginc` on GitHub, https://op.gg). Seoul-based gaming data company. Provides stats, meta, and esports data for League of Legends, Teamfight Tactics, and Valorant.
+- **What this repo is**: an open-source (MIT) stdio MCP client that proxies to OP.GG's hosted MCP service. Published to npm as `opgg-mcp` and distributed via Smithery. Typical consumers are stdio MCP clients that cannot speak Streamable HTTP directly — Claude Desktop, Cursor, Windsurf, and similar.
+- **What this repo is *not***: it is **not** the MCP server. The server is `opgginc/opgg-mcp-server` (private, Laravel + `opgginc/laravel-mcp-server`). All tool schemas, business logic, OP.GG API calls, and rate limiting live there. This repo only forwards `tools/`, `resources/`, `prompts/`, `logging/`, and `completion/` requests.
+- **Remote endpoint**: `https://mcp-api.op.gg/mcp` (hardcoded in `src/index.ts`). Streamable HTTP transport. Changing this URL requires coordination with the OP.GG MCP service owners.
+- **Why a proxy at all**: most current MCP clients ship stdio-only transports. This binary bridges stdio ↔ Streamable HTTP so users can install with `npx opgg-mcp` or via Smithery without running their own HTTP plumbing.
+
+## Tool Surface (lives on the remote, listed here for orientation)
+- **League of Legends**: champion analysis / synergies / matchup / details / leaderboard / list / lane meta; summoner profile, match list, game detail; items; discounted skins; pro player Riot ID.
+- **LoL Esports**: schedules, team standings.
+- **TFT**: champion item build, play style, augments, champions-for-item, item combinations, meta decks.
+- **Valorant**: agent compositions per map, agent statistics, player matches.
+- **Naming convention** (enforced on the server side): lowercase snake_case, game prefix (`lol_`, `lol_esports_`, `tft_`, `valorant_`), `get_` for single-resource, `list_` for collections. Do not invent or alias names locally — the proxy must forward whatever the server publishes.
+- **Field selection**: most tools require `desired_output_fields` (dot/`[]`/`{a,b}` syntax). README.md is the source of truth for the surface and must be re-synced whenever the server's tool inventory changes.
+
+## Related Repos
+- `opgginc/opgg-mcp-server` — the actual MCP server (private). All tool implementations, sanitizers, DTOs, response formatters (TOON/TRON) live here.
+- `opgginc/laravel-mcp-server` — Laravel package powering the server (SSE / Redis adapter).
+
 ## Project Map
 - `src/index.ts`: entry point. Connects to the remote MCP endpoint and binds it to stdio.
 - `src/proxy-server.ts`: generic capability bridge (tools, resources, prompts, logging, completion).
