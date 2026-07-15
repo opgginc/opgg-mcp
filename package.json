@@ -19,7 +19,7 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.10.0",
+    "@modelcontextprotocol/sdk": "^1.26.0",
     "eventsource": "^3.0.6"
   },
   "repository": {
