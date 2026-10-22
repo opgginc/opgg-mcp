@@ -40,14 +40,14 @@ const proxy = async (url: string): Promise<void> => {
     capabilities: serverCapabilities,
   });
 
-  const stdioTransport = new StdioServerTransport();
-  await server.connect(stdioTransport);
-
   await proxyServer({
     server,
     client,
     serverCapabilities,
   });
+
+  const stdioTransport = new StdioServerTransport();
+  await server.connect(stdioTransport);
 };
 
 const main = async () => {

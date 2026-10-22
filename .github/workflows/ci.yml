@@ -27,11 +27,6 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
 
-      - name: Node pin matches .nvmrc
-        run: |
-          version="$(tr -d '[:space:]' < .nvmrc)"
-          grep -q "^ARG NODE_VERSION=${version}$" Dockerfile
-
       - name: Install
         run: pnpm install --frozen-lockfile
 
@@ -55,10 +50,11 @@ jobs:
       - name: Node pin matches .nvmrc
         run: |
           version="$(tr -d '[:space:]' < .nvmrc)"
-          grep -q "^ARG NODE_VERSION=${version}$" Dockerfile
+          grep -q "^FROM node:${version}-alpine AS build$" Dockerfile
+          grep -q "^FROM node:${version}-alpine AS runtime$" Dockerfile
 
       - name: Build image
-        run: docker build --build-arg NODE_VERSION="$(tr -d '[:space:]' < .nvmrc)" -t opgg-mcp:ci .
+        run: docker build -t opgg-mcp:ci .
 
       - name: Handshake image with live MCP
         run: bash .github/scripts/boot-proxy.sh docker run -i --rm opgg-mcp:ci

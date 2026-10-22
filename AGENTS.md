@@ -5,15 +5,15 @@ definitions live on the remote endpoint, not in this repo. See `README.md`
 for the user-facing tool list.
 
 ## Project Map
-- `src/index.ts`: entry point. Connects to the remote MCP endpoint and binds it to stdio.
+- `src/index.ts`: entry point. Connects to the remote MCP endpoint, registers proxy handlers, then opens stdio. A registration failure must not answer `initialize`.
 - `src/proxy-server.ts`: generic capability bridge (tools, resources, prompts, logging, completion).
 - `dist/`: build output from `tsup`. Git-ignored. Do not edit.
 - `docs/apps-sdk/`, `docs/kakao/`: reference material only. Not part of the build.
-- `.nvmrc`: the Node patch pin. CI and the image read this version.
+- `.nvmrc`: the Node patch pin. The image job checks both `FROM node:<pin>-alpine` lines against it.
 - `Dockerfile`, `smithery.yaml`: Smithery runs the image. The Dockerfile is maintained in this repo so the Node pin and the pnpm frozen install survive regeneration.
 - `.github/workflows/ci.yml`: pull-request build, typecheck, and live MCP initialize handshake.
 - `.github/scripts/boot-proxy.sh`: sends one stdio `initialize` and requires `protocolVersion` in the result.
-- `.github/dependabot.yml`: weekly npm group updates (`npm_and_yarn`) and the Docker ecosystem. The Node pin stays in `.nvmrc`; Dependabot does not rewrite an image version stored in `ARG`.
+- `.github/dependabot.yml`: weekly npm group updates (`npm_and_yarn`) and Docker `FROM` updates. A `FROM` bump that leaves `.nvmrc` behind fails the image job.
 - `README.md`, `README.ko.md`, `README.ja.md`, `README.zh-CN.md`, `README.zh-TW.md`, `README.pt-BR.md`: keep the 6 language READMEs in sync.
 
 ## Commands
@@ -25,7 +25,7 @@ for the user-facing tool list.
 
 ## Workflow Rules
 - Use pnpm. Do not use npm or yarn. The lockfile is `pnpm-lock.yaml`. The pnpm version is `packageManager` in `package.json`.
-- The Node version is `.nvmrc`. `actions/setup-node` uses `node-version-file: .nvmrc`. The image `ARG NODE_VERSION` default must match that file; CI and the image build both fail when they differ. `tsconfig.json` extends `@tsconfig/node22` for the TypeScript target.
+- The Node version is `.nvmrc`. `actions/setup-node` uses `node-version-file: .nvmrc`. Both Dockerfile `FROM` lines name `node:<pin>-alpine` so Dependabot can bump them, and the image job fails when either line differs from `.nvmrc`. `tsconfig.json` extends `@tsconfig/node22` for the TypeScript target.
 - Use ESM only. `package.json` declares `"type": "module"` and `tsup.format` is `["esm"]`.
 - The remote endpoint `https://mcp-api.op.gg/mcp` is hardcoded in `src/index.ts`. Do not change it without coordinating with the OP.GG MCP service owners.
 - Do not declare MCP tools, resources, or prompts in this repo. The proxy forwards them from the remote server. Adding local definitions defeats the proxy and breaks parity with the remote.
