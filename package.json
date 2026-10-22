@@ -15,12 +15,14 @@
     "proxy"
   ],
   "type": "module",
+  "packageManager": "pnpm@10.33.4",
   "license": "MIT",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.10.0",
-    "eventsource": "^3.0.6"
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "eventsource": "^3.0.6",
+    "zod": "^4.6.7"
   },
   "repository": {
     "url": "https://github.com/opgginc/opgg-mcp"

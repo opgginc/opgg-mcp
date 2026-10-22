@@ -60,12 +60,12 @@ export const proxyServer = async ({
       return client.readResource(args.params);
     });
 
-    if (serverCapabilities?.resources.subscribe) {
+    if (serverCapabilities.resources.subscribe) {
       server.setNotificationHandler(
-          ResourceUpdatedNotificationSchema,
-          async (args) => {
-            return client.notification(args);
-          },
+        ResourceUpdatedNotificationSchema,
+        async (args) => {
+          return client.notification(args);
+        },
       );
 
       server.setRequestHandler(SubscribeRequestSchema, async (args) => {
@@ -88,7 +88,9 @@ export const proxyServer = async ({
     });
   }
 
-  server.setRequestHandler(CompleteRequestSchema, async (args) => {
-    return client.complete(args.params);
-  });
+  if (serverCapabilities?.completions) {
+    server.setRequestHandler(CompleteRequestSchema, async (args) => {
+      return client.complete(args.params);
+    });
+  }
 };
