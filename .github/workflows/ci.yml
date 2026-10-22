@@ -20,14 +20,17 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10.33.4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24.22.1
+          node-version-file: .nvmrc
           cache: pnpm
+
+      - name: Node pin matches .nvmrc
+        run: |
+          version="$(tr -d '[:space:]' < .nvmrc)"
+          grep -q "^ARG NODE_VERSION=${version}$" Dockerfile
 
       - name: Install
         run: pnpm install --frozen-lockfile
@@ -38,7 +41,7 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Boot proxy
+      - name: Handshake with live MCP
         run: bash .github/scripts/boot-proxy.sh node dist/index.js
 
   image:
@@ -49,11 +52,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build image
-        run: docker build -t opgg-mcp:ci .
-
-      - name: Boot image
+      - name: Node pin matches .nvmrc
         run: |
-          set -euo pipefail
-          docker run -d --name opgg-mcp-boot --init -i opgg-mcp:ci
-          bash .github/scripts/boot-proxy.sh docker inspect-wait opgg-mcp-boot
+          version="$(tr -d '[:space:]' < .nvmrc)"
+          grep -q "^ARG NODE_VERSION=${version}$" Dockerfile
+
+      - name: Build image
+        run: docker build --build-arg NODE_VERSION="$(tr -d '[:space:]' < .nvmrc)" -t opgg-mcp:ci .
+
+      - name: Handshake image with live MCP
+        run: bash .github/scripts/boot-proxy.sh docker run -i --rm opgg-mcp:ci
